@@ -21,12 +21,6 @@ int solution(vector<int> people, int limit) {
         {
             iLast--;
             iFailCount++;
-
-            if (iLast == iBegin)
-            {
-                iBoatSize++;
-                break;
-            }
         }
         else
         {
