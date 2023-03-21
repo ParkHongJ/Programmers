@@ -1,57 +1,80 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <set>
 using namespace std;
 
-int solution(vector<int> common) {
-    int iSize = common.size();
+int solution(vector<vector<int>> board) {
+    int answer = 0;
 
-    int iTemp = 0;
-    for (int i = 0; i < iSize - 1; i++)
+    //안전지대의 인덱스
+    set<int> BoomIndex;
+
+    int iMaxSize = board.size() * board.size();
+    for (int i = 0; i < board.size(); i++)
     {
-        int j = i + 1;
-        int result = common[j] - common[i];
-
-        //공차를 찾았다면
-        if (result == iTemp)
+        for (int j = 0; j < board[i].size(); j++)
         {
-            //등차라면
-            if ((common[i] + result) == common[j])
-            {
-                return common.back() + result;
-            }
-        }
-        else
-        {
-            //등비라면
-            if (((common[i] * result) == common[j]) && (result != 0))
-            {
-                return common.back() * result;
-            }
-            else if (((common[i] * -result) == common[j]) && (result != 0))
-            {
-                return common.back() * -result;
-            }
+            //지뢰라면.
+            if (board[i][j] == 1)
+			{
+				BoomIndex.insert(i * board[i].size() + j);
 
-            if ((i != 0) && (iTemp != result))
-            {
-                int result2 = common[j] / common[i];
-                if (((common[i] * result2) == common[j]) && (result2 != 0))
+                //왼쪽이 있다면.
+                if (j - 1 >= 0)
                 {
-                    return common.back() * result2;
+                    BoomIndex.insert(i * board[i].size() + (j - 1));
+                    
+                    //좌상
+                    if (i - 1 >= 0)
+                    {
+                        BoomIndex.insert((i - 1) * board[i].size() + (j - 1));
+                    }
+                    //좌하
+                    if (i + 1 < board.size())
+                    {
+                        BoomIndex.insert((i + 1) * board[i].size() + (j - 1));
+                    }
                 }
-            }
-            else
-            {
-                iTemp = result;
+                //오른쪽
+                if (j + 1 < board[i].size())
+                {
+                    BoomIndex.insert(i * board[i].size() + (j + 1));
+                    //우상
+                    if (i - 1 >= 0)
+                    {
+                        BoomIndex.insert((i - 1) * board[i].size() + (j + 1));
+                    }
+                    //우하
+                    if (i + 1 < board.size())
+                    {
+                        BoomIndex.insert((i + 1) * board[i].size() + (j + 1));
+                    }
+                }
+                //상
+                if (i - 1 >= 0)
+                {
+                    BoomIndex.insert((i - 1) * board[i].size() + j);
+                }
+                //하
+                if (i + 1 < board.size() )
+                {
+                    BoomIndex.insert((i + 1) * board[i].size() + j);
+                }
             }
         }
     }
+    return iMaxSize - BoomIndex.size();
 }
+
 int main()
 {
-    vector<int> common = { -10,-30,-50,-70 };
-    vector<int> common2 = { 1,-2,4,-8 };
-    cout << solution(common2) << endl;
+    vector<vector<int>> common = {
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 1, 0, 0},
+        {0, 0, 0, 0, 0}};
+    cout << solution(common) << endl;
     return 0;
 }
