@@ -1,66 +1,58 @@
+#include <iostream>
 #include <string>
 #include <vector>
-#include <iostream>
-#include <algorithm>
 
 using namespace std;
 
-int solution(vector<int> people, int limit) {
-    sort(people.begin(), people.end());
-       
-    int iLast = people.size() - 1;
+int solution(string skill, vector<string> skill_trees) {
+    int answer = skill_trees.size();
     
-    int iBoatSize = 0;
-    int iBegin = 0;
-    int iTemp = 0;
-    int iFailCount = 0;
-    while (iBegin < iLast)
+    for (auto& iter : skill_trees)
     {
-        //보트에 실패하면
-        if (people[iBegin] + people[iLast] > limit)
+        int iOffset = 0;
+        int iOldOffset = -1;
+        for (int i = 0; i < iter.length(); i++)
         {
-            iLast--;
-            iFailCount++;
-
-            if (iLast == iBegin)
+            //유저가 입력한 첫번째 스킬
+            iOffset = skill.find(iter[i]);
+            
+            if (iOffset < 0)
+                continue;
+            
+            //처음 입력한 것
+            if (iOldOffset < 0)
             {
-                iBoatSize++;
-                break;
-            }
-        }
-        else
-        {
-            //보트 성공
-            iBoatSize++;
-
-            iLast--;
-            iBegin++;
-            if (iLast == iBegin)
-            {
-                iBoatSize++;
-                break;
+                if (iOffset > 0)
+                {
+                    answer--;
+                    break;
+                }
+                iOldOffset = iOffset;
+                continue;
             }
 
+            if ((iOffset > iOldOffset) && ((iOffset - iOldOffset) == 1))
+            {
+                iOldOffset = iOffset;
+                continue;
+            }
+            else
+            {
+                answer--;
+                break;
+            }
 
+            iOldOffset = iOffset;
         }
     }
 
-    /*if ((people.size() % 2) != 0)
-    {
-        iBoatSize++;
-    }*/
-    /*else if ((isBoatSize != people.size() / 2) && (iFailCount > 0))
-    {
-        iBoatSize++;
-    }*/
-
-    iBoatSize += iFailCount;
-    return  iBoatSize;
+    return answer;
 }
 
 int main()
 {
-    vector<int> people = { 70, 80, 50 };
-    cout << solution(people, 100) << endl;
+    vector<string> people = { "CED", "CBADF", "AECB","BDA" };
+    string str = "CBD";
+    cout << solution(str, people) << endl;
     return 0;
 }
