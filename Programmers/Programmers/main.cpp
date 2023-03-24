@@ -1,41 +1,41 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <stack>
 using namespace std;
 
-int solution(vector<string> babbling) {
+int solution(vector<int> ingredient) {
 	int answer = 0;
+	string Data;
+	Data.reserve(ingredient.size());
 
-	vector<string> myBabbling = { "aya", "ye", "woo", "ma" };
-
-	
-	for (auto& iter : babbling)
+	for (auto& iter : ingredient)
 	{
-		int iOffset = 0;
-		int iCorrectLength = 0;
-		int iBeforeBabb = -1;
-		for (int i = 0; i < myBabbling.size(); ++i)
+		Data += to_string(iter);
+	}
+	
+	int i = 0;
+	int j = 8;
+	
+	while (true)
+	{
+		string str = Data.substr(i, i + j);
+
+		int num = str.find("1231");
+
+		if (num != -1)
 		{
-			string myBabb = myBabbling[i];
-			int iLength = myBabb.length();
-			string str = iter.substr(iOffset, iLength);
-			if (str == myBabb)
-			{
-				if (iBeforeBabb == i)
-				{
-					break;
-				}
-				iBeforeBabb = i;
-				iOffset += iLength;
-				if (iOffset == iter.length())
-				{
-					answer++;
-					break;
-				}
-				i = -1;
-			}
+			Data.erase(Data.begin() + num, Data.begin() + num + 4);
+
+			answer++;
+			i = 0;
+			j = i + 8;
 		}
+		else
+		{
+			i++;
+			j++;
+		}
+
 	}
 	return answer;
 }
@@ -130,8 +130,14 @@ int solution(vector<string> babbling) {
 //int Person::a = 0;
 int main()
 {
-	vector<string> test = { "aya", "yee", "u", "maa" };
+	vector<int> test = { 1, 2, 3, 1, 
+		2, 3, 1, 1, 1, 
+		1, 2, 3, 1, 
+		2, 3, 1, 
+		1, 1, 1, 1, 1, 2, 3, 3, 
+		1, 2, 3, 1, 
+		3, 3, 3, 2, 
+		1, 2, 3, 1 };
 	cout << solution(test) << endl;
-
     return 0;
 }
