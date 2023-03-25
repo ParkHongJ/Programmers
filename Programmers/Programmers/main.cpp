@@ -3,39 +3,84 @@
 #include <vector>
 using namespace std;
 
-int solution(vector<int> ingredient) {
+int solution(vector<vector<int>> dots) {
 	int answer = 0;
-	string Data;
-	Data.reserve(ingredient.size());
 
-	for (auto& iter : ingredient)
+	int iMaxSize = 3;
 	{
-		Data += to_string(iter);
+		double x1 = abs(dots[0][0] - dots[1][0]);
+		double y1 = abs(dots[0][1] - dots[1][1]);
+
+		if (x1 == 0)
+		{
+			x1 = 0;
+		}
+
+		double x2 = abs(dots[2][0] - dots[3][0]);
+		double y2 = abs(dots[2][1] - dots[3][1]);
+
+		if (x2 == 0)
+		{
+			x2 = 0;
+		}
+
+		double iResult1 = y1 / x1;
+		double iResult2 = y2 / x2;
+
+		if (iResult1 == iResult2)
+		{
+			return 1;
+		}
 	}
-	
-	int i = 0;
-	int j = 8;
-	
-	while (true)
 	{
-		string str = Data.substr(i, i + j);
+		double x1 = abs(dots[0][0] - dots[2][0]);
+		double y1 = abs(dots[0][1] - dots[2][1]);
 
-		int num = str.find("1231");
-
-		if (num != -1)
+		if (x1 == 0)
 		{
-			Data.erase(Data.begin() + num, Data.begin() + num + 4);
-
-			answer++;
-			i = 0;
-			j = i + 8;
-		}
-		else
-		{
-			i++;
-			j++;
+			x1 = 0;
 		}
 
+		double x2 = abs(dots[1][0] - dots[3][0]);
+		double y2 = abs(dots[1][1] - dots[3][1]);
+
+		if (x2 == 0)
+		{
+			x2 = 0;
+		}
+
+		double iResult1 = y1 / x1;
+		double iResult2 = y2 / x2;
+
+		if (iResult1 == iResult2)
+		{
+			return 1;
+		}
+	}
+	{
+		double x1 = abs(dots[0][0] - dots[3][0]);
+		int y1 = abs(dots[0][1] - dots[3][1]);
+
+		if (x1 == 0)
+		{
+			x1 = 0;
+		}
+
+		double x2 = abs(dots[1][0] - dots[2][0]);
+		double y2 = abs(dots[1][1] - dots[2][1]);
+
+		if (x2 == 0)
+		{
+			x2 = 0;
+		}
+
+		double iResult1 = y1 / x1;
+		double iResult2 = y2 / x2;
+
+		if (iResult1 == iResult2)
+		{
+			return 1;
+		}
 	}
 	return answer;
 }
@@ -130,14 +175,8 @@ int solution(vector<int> ingredient) {
 //int Person::a = 0;
 int main()
 {
-	vector<int> test = { 1, 2, 3, 1, 
-		2, 3, 1, 1, 1, 
-		1, 2, 3, 1, 
-		2, 3, 1, 
-		1, 1, 1, 1, 1, 2, 3, 3, 
-		1, 2, 3, 1, 
-		3, 3, 3, 2, 
-		1, 2, 3, 1 };
+	vector<vector<int>> test = { {1, 1} ,{4, 2},{5, 5}
+	,{7, 7} };
 	cout << solution(test) << endl;
     return 0;
 }
