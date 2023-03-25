@@ -1,87 +1,74 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <set>
 using namespace std;
 
-int solution(vector<vector<int>> dots) {
+int solution(vector<vector<int>> lines) {
 	int answer = 0;
 
-	int iMaxSize = 3;
+	set<vector<int>> test;//ÁßÃ¸µÈ Á¡µéÀ» º¸°ü
+	
+	for (int i = 0; i < lines.size(); i++)
 	{
-		double x1 = abs(dots[0][0] - dots[1][0]);
-		double y1 = abs(dots[0][1] - dots[1][1]);
-
-		if (x1 == 0)
+		for (int j = 0; j < lines.size(); j++)
 		{
-			x1 = 0;
-		}
+			if (lines[i] == lines[j])
+			{
+				continue;
+			}
 
-		double x2 = abs(dots[2][0] - dots[3][0]);
-		double y2 = abs(dots[2][1] - dots[3][1]);
+			//¼±ºÐÀÌ °ãÃÆ´Ù
+			if (lines[i][0] <= lines[j][0] &&
+				lines[i][1] > lines[j][0])
+			{
+				int x = lines[j][0];
+				int y = 0;
 
-		if (x2 == 0)
-		{
-			x2 = 0;
-		}
-
-		double iResult1 = y1 / x1;
-		double iResult2 = y2 / x2;
-
-		if (iResult1 == iResult2)
-		{
-			return 1;
+				if (lines[i][1] <= lines[j][1])
+				{
+					y = lines[i][1];
+				}
+				else
+				{
+					y = lines[j][1];
+				}
+				vector<int> Points = { x,y };
+				test.insert(Points);
+			}
 		}
 	}
+
+	int iX = 0;
+	int iY = 0;
+	for (auto& iter : test)
 	{
-		double x1 = abs(dots[0][0] - dots[2][0]);
-		double y1 = abs(dots[0][1] - dots[2][1]);
-
-		if (x1 == 0)
+		for (auto& iter2 : test)
 		{
-			x1 = 0;
-		}
+			if (iter == iter2)
+			{
+				continue;
+			}
 
-		double x2 = abs(dots[1][0] - dots[3][0]);
-		double y2 = abs(dots[1][1] - dots[3][1]);
+			//¶Ç°É·È´Ù
+			if (iter[0] <= iter2[0] &&
+				iter[1] > iter2[0])
+			{
+				int x = iter2[0];
+				int y = 0;
 
-		if (x2 == 0)
-		{
-			x2 = 0;
-		}
-
-		double iResult1 = y1 / x1;
-		double iResult2 = y2 / x2;
-
-		if (iResult1 == iResult2)
-		{
-			return 1;
+				if (iter[1] <= iter2[1])
+				{
+					y = iter[1];
+				}
+				else
+				{
+					y = iter2[1];
+				}
+			}
 		}
 	}
-	{
-		double x1 = abs(dots[0][0] - dots[3][0]);
-		int y1 = abs(dots[0][1] - dots[3][1]);
 
-		if (x1 == 0)
-		{
-			x1 = 0;
-		}
-
-		double x2 = abs(dots[1][0] - dots[2][0]);
-		double y2 = abs(dots[1][1] - dots[2][1]);
-
-		if (x2 == 0)
-		{
-			x2 = 0;
-		}
-
-		double iResult1 = y1 / x1;
-		double iResult2 = y2 / x2;
-
-		if (iResult1 == iResult2)
-		{
-			return 1;
-		}
-	}
 	return answer;
 }
 
@@ -175,8 +162,7 @@ int solution(vector<vector<int>> dots) {
 //int Person::a = 0;
 int main()
 {
-	vector<vector<int>> test = { {1, 1} ,{4, 2},{5, 5}
-	,{7, 7} };
+	vector<vector<int>> test = { {0, 5} ,{3, 9},{1, 10}};
 	cout << solution(test) << endl;
     return 0;
 }
