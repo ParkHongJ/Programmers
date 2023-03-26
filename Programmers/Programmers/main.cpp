@@ -4,72 +4,35 @@
 #include <set>
 using namespace std;
 
-int solution(vector<vector<int>> lines) {
-	int answer = 0;
+string solution(string s, string skip, int index) {
 
-	set<vector<int>> test;//ÁßÃ¸µÈ Á¡µéÀ» º¸°ü
-	
-	for (int i = 0; i < lines.size(); i++)
-	{
-		for (int j = 0; j < lines.size(); j++)
-		{
-			if (lines[i] == lines[j])
-			{
-				continue;
-			}
+    string answer = "";
 
-			//¼±ºÐÀÌ °ãÃÆ´Ù
-			if (lines[i][0] <= lines[j][0] &&
-				lines[i][1] > lines[j][0])
-			{
-				int x = lines[j][0];
-				int y = 0;
+    for (int i = 0; i < s.length(); ++i)
+    {
+        for (int j = 0; j < index; ++j)
+        {
+            char temp;
+            if (s[i] + 1 > 'z')
+            {
+                temp = 'a';
+            }
+            else
+            {
+                temp = s[i] + 1;
+            }
 
-				if (lines[i][1] <= lines[j][1])
-				{
-					y = lines[i][1];
-				}
-				else
-				{
-					y = lines[j][1];
-				}
-				vector<int> Points = { x,y };
-				test.insert(Points);
-			}
-		}
-	}
+            int iOffset = skip.find(temp);
+            if (iOffset >= 0)
+            {
+                j--;
+            }
+            s[i] = temp;
+        }
+        answer += s[i];
+    }
 
-	int iX = 0;
-	int iY = 0;
-	for (auto& iter : test)
-	{
-		for (auto& iter2 : test)
-		{
-			if (iter == iter2)
-			{
-				continue;
-			}
-
-			//¶Ç°É·È´Ù
-			if (iter[0] <= iter2[0] &&
-				iter[1] > iter2[0])
-			{
-				int x = iter2[0];
-				int y = 0;
-
-				if (iter[1] <= iter2[1])
-				{
-					y = iter[1];
-				}
-				else
-				{
-					y = iter2[1];
-				}
-			}
-		}
-	}
-
-	return answer;
+    return answer;
 }
 
 //typedef char ElementType;
@@ -162,7 +125,5 @@ int solution(vector<vector<int>> lines) {
 //int Person::a = 0;
 int main()
 {
-	vector<vector<int>> test = { {0, 5} ,{3, 9},{1, 10}};
-	cout << solution(test) << endl;
     return 0;
 }
