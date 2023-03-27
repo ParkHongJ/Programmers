@@ -53,6 +53,7 @@ int solution(vector<int> order) {
 
 int main()
 {
+    int test = 0;
     //vector<int> order = { 4,3,1,2,5 };
     vector<int> order = { 2, 1, 6, 7, 5, 8, 4, 9, 3, 10 };
     cout << solution(order) << endl;
