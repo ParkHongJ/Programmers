@@ -1,51 +1,50 @@
 #include <iostream>
-#include <stack>
+#include <string>
 #include <vector>
-
+#include <stack>
+#include <algorithm>
 using namespace std;
 
-int solution(vector<int> order) {
+int solution(int n, vector<int> lost, vector<int> reserve) {
     int answer = 0;
 
-    stack<int> Boxes;
-    
-    for (int i = order.size(); i > 0; i--)
-    {
-        Boxes.push(i);
-    }
+    sort(lost.begin(), lost.end());
+    sort(reserve.begin(), reserve.end());
 
-    stack<int> TempContainer;
-    
-    for (int i = 0; i < order.size(); i++)
+    for (int i = 0; i < lost.size(); i++)
     {
-        while (true)
+        for (int j = 0; j < reserve.size(); j++)
         {
-            if (!TempContainer.empty())
+            if (lost[i] == reserve[j])
             {
-                if (TempContainer.top() == order[i])
-                {
-                    TempContainer.pop();
-                    answer++;
-                    break;
-                }
-            }
-
-            if (Boxes.empty())
-            {
-                return answer;
-            }
-            else if (order[i] == Boxes.top())
-            {
-                Boxes.pop();
-                answer++;
-                break;
-            }
-            else
-            {
-                TempContainer.push(Boxes.top());
-                Boxes.pop();
+                lost.erase(lost.begin() + i);
+                reserve.erase(reserve.begin() + j);
             }
         }
+    }
+
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 0; j < lost.size(); j++)
+        {
+            //도난당했다면
+            if (lost[j] == i)
+            {
+                answer--;
+                for (int k = 0; k < reserve.size(); k++)
+                {
+                    if ((reserve[k] -1 == lost[j]) || (reserve[k] + 1 == lost[j]) || (reserve[k] == lost[j]))
+                    {
+                        answer++;
+                        lost.erase(lost.begin() + j);
+                        reserve.erase(reserve.begin() + k);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        answer++;
     }
 
     return answer;
@@ -53,9 +52,9 @@ int solution(vector<int> order) {
 
 int main()
 {
-    int test = 0;
-    //vector<int> order = { 4,3,1,2,5 };
-    vector<int> order = { 2, 1, 6, 7, 5, 8, 4, 9, 3, 10 };
-    cout << solution(order) << endl;
+	vector<int> lost = { 2,3 };
+	vector<int> reserve = { 3,4 };
+    //13[13, 6, 1][11, 9, 8, 7] 11
+    cout << solution(4, lost, reserve) << endl;
     return 0;
 }

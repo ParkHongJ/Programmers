@@ -13,15 +13,42 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\Stack">
+      <UniqueIdentifier>{9455955a-cf62-4149-a68b-fe9636f76d58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Queue">
+      <UniqueIdentifier>{c273ab36-e616-441a-b360-004619326bda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Map">
+      <UniqueIdentifier>{90f88b52-95f1-4afa-80ff-3476f89de711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\List">
+      <UniqueIdentifier>{b7699a78-d1a7-42e5-a7f9-55d94dba062b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\RingBuffer">
+      <UniqueIdentifier>{2e1f8875-f061-4cc6-8196-e9ee11ab57fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Node">
+      <UniqueIdentifier>{78c5507e-45e1-4f7c-b727-de4cc11e4670}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Stack.cpp">
+      <Filter>소스 파일\Stack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Stack.h">
+      <Filter>소스 파일\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
