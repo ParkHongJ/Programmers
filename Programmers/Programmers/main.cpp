@@ -5,12 +5,16 @@
 #include <vector>
 #include <algorithm>
 #include <conio.h>
+#include <queue>
+
 #pragma warning(disable :4996)
 using namespace std;
 
 int T, M;
 void BackJoon()
 {
+
+    priority_queue<int> iQueue;
     freopen("input.txt", "r", stdin);
 
     cin >> T;
