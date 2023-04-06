@@ -7,6 +7,7 @@
 #include <conio.h>
 #include <queue>
 
+#include <stack>
 #pragma warning(disable :4996)
 using namespace std;
 
@@ -64,39 +65,48 @@ typedef struct tagMineralsFatigue {
     int stone = 0;
 }Fatigue;
 
-int solution(vector<int> picks, vector<string> minerals) {
-    
-    vector< Fatigue> fatigue;
 
-    int iCount = 0;
-	Fatigue _fatigue;
-	for (int i = 0; i < minerals.size() - minerals.size() % 5; i++)
+vector<int> solution(vector<int> progresses, vector<int> speeds) {
+    vector<int> answer;
+
+	vector<int> temp;
+	int j = 1;
+    int i = 0;
+	while (i <= progresses.size())
 	{
-		if (minerals[i] == "diamond") { _fatigue.dia++; }
-		if (minerals[i] == "iron") { _fatigue.iron++; }
-		if (minerals[i] == "stone") { _fatigue.stone++; }
-
-		iCount++;
-		if (iCount >= 5)
+		if (progresses[i] + speeds[i] * j >= 100)
 		{
-            fatigue.push_back(_fatigue);
-            _fatigue.dia = 0;
-            _fatigue.iron = 0;
-            _fatigue.stone = 0;
+			temp.push_back(j);
+            i++;
+
+            if (i == progresses.size())
+            {
+                answer.push_back(temp.size());
+                break;
+            }
+            continue;
 		}
-    }
-	sort(fatigue.begin(), fatigue.end(), [](int dia, int iron) -> bool {
-		return dia > iron;
-		});
-    int answer = 0;
-    return answer;
+		else
+		{
+			if (!temp.empty())
+			{
+				answer.push_back(temp.size());
+
+				temp.clear();
+			}
+		}
+        j++;
+	}
+	return answer;
 }
 
 void Programmers()
 {
-    vector<int> picks = { 1, 3, 2 };
-    vector<string> minerals = { "diamond", "diamond", "diamond", "iron", "iron", "diamond", "iron", "stone" };
-    cout << solution(picks, minerals) << endl;
+    vector<int> progresses = { 95, 95, 95, 95 };
+    vector<int> speeds = { 4,3,2,1 };
+    //vector<string> minerals = { "diamond", "diamond", "diamond", "iron", "iron", "diamond", "iron", "stone" };
+    solution(progresses, speeds);
+    //cout << solution(progresses, speeds) << endl;
 }
 
 int main()
