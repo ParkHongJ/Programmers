@@ -12,106 +12,98 @@
 using namespace std;
 
 
+typedef struct Node
+{
+	int left;
+	int right;
+
+	char data;
+}NODE;
+
+void Preorder(vector<Node>& tree, int Index)
+{
+	cout << tree[Index].data;
+
+	if (tree[Index].left >= 0)
+	{
+		Preorder(tree, tree[Index].left);
+	}
+	if (tree[Index].right >= 0)
+	{
+		Preorder(tree, tree[Index].right);
+	}
+}
+
+void Inorder(vector<Node>& tree, int Index)
+{
+	if (tree[Index].left >= 0)
+	{
+		Inorder(tree, tree[Index].left);
+	}
+
+	cout << tree[Index].data;
+
+	if (tree[Index].right >= 0)
+	{
+		Inorder(tree, tree[Index].right);
+	}
+}
+
+void Postorder(vector<Node>& tree, int Index)
+{
+	if (tree[Index].left >= 0)
+	{
+		Postorder(tree, tree[Index].left);
+	}
+
+	if (tree[Index].right >= 0)
+	{
+		Postorder(tree, tree[Index].right);
+	}
+
+	cout << tree[Index].data;
+}
 void BackJoon()
 {
     freopen("input.txt", "r", stdin);
 
-	int N, M;
-	cin >> N >> M;
-    vector<vector<int>> rect;
-    
-    rect.resize(N);
+	int N;
+	cin >> N;
 
-    for (int i = 0; i < N; i++)
-    {
-        rect[i].resize(M);
-
-		string str;
-		cin >> str;
-		for (int j = 0; j < str.length(); j++)
-		{
-			rect[i][j] = str[j] - '0';
-		}
-        /*for (int j = 0; j < M; j++)
-        {
-            cin >> rect[i][j];
-        }*/
-    }
-
-    int width = 0, height = 0;
-
-
-    //현재 확인중인 꼭짓점의 번호
-    int CurrentNum = 0;
-
-	//윗변 확인
-	int col = 0, row = 0;
-
-	while (CurrentNum < 10)
+	vector<Node> tree;
+	tree.resize(N);
+	for (int i = 0; i < N; i++)
 	{
-		int widthTemp = 0;
-		//현재 검사중인 번호 기준으로 lt를 구한다
-		if (CurrentNum == rect[col][row])
-		{
-			//뒤부터 rt를 검사한다.
-			for (int i = M - 1; i >= 0; i--)
-			{
-				//겹치는 가로변이 없다면 의미가없다
-				if (i == row)
-				{
-					break;
-				}
+		char root, left, right;
+		cin >> root >> left >> right;
+		
+		Node node;
+		node.data = root;
+		
+		if (left == '.')
+			left = -1;
+		else
+			left = left - 'A';
 
-				//임시 rt를 구한다음
-				if (CurrentNum == rect[col][i])
-				{
-					//임시 가로 크기를 구한다. lb를 위해
-					widthTemp = i - row;
+		if (right == '.')
+			right = -1;
+		else
+			right = right - 'A';
 
-					//직사각형의 세로보다 크면 의미가 없다.
-					if (col + widthTemp >= N)
-					{
-						continue;
-					}
 
-					//lb 검사
-					if (CurrentNum == rect[col + widthTemp][row])
-					{
-						//rb검사 
-						if (CurrentNum == rect[col + widthTemp][i])
-						{
-							width = max(widthTemp + 1, width);
-						}
-					}
-				}
-			}
-		}
-		//다르다면 다음 가로변을 검사한다.
-		row++;
-		//가로를 다 돌았다면 세로를 증가시켜 검사
-		if (row >= M)
-		{
-			col++;
-			row = 0;
-		}
-
-		//가로 세로를 다 돌았다면
-		if (col >= N)
-		{
-			CurrentNum++; //다음 꼭짓점의 번호를 검사
-
-			row = 0; col = 0;
-		}
+		node.left = left;
+		node.right = right;
+		tree[root - 'A'] = node;
 	}
 
-	if (width == 0)
-	{
-		cout << 1 << endl;
-	}
-	else
-	{
-		cout << width * width << endl;
-	}
+	//preorder
+	
+	Preorder(tree, 0);
+	cout << endl;
+	Inorder(tree, 0);
+	cout << endl;
+	Postorder(tree, 0);
+	
 }
 
 typedef struct tagMineralsFatigue {
