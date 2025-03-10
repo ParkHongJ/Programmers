@@ -8,61 +8,18 @@
 #include <queue>
 #include <list>
 #include <stack>
+#include <set>
 #pragma warning(disable :4996)
 using namespace std;
 
 
 typedef struct Node
 {
-	int left;
-	int right;
+	vector<int> child;
 
-	char data;
+	int data;
 }NODE;
 
-void Preorder(vector<Node>& tree, int Index)
-{
-	cout << tree[Index].data;
-
-	if (tree[Index].left >= 0)
-	{
-		Preorder(tree, tree[Index].left);
-	}
-	if (tree[Index].right >= 0)
-	{
-		Preorder(tree, tree[Index].right);
-	}
-}
-
-void Inorder(vector<Node>& tree, int Index)
-{
-	if (tree[Index].left >= 0)
-	{
-		Inorder(tree, tree[Index].left);
-	}
-
-	cout << tree[Index].data;
-
-	if (tree[Index].right >= 0)
-	{
-		Inorder(tree, tree[Index].right);
-	}
-}
-
-void Postorder(vector<Node>& tree, int Index)
-{
-	if (tree[Index].left >= 0)
-	{
-		Postorder(tree, tree[Index].left);
-	}
-
-	if (tree[Index].right >= 0)
-	{
-		Postorder(tree, tree[Index].right);
-	}
-
-	cout << tree[Index].data;
-}
 void BackJoon()
 {
     freopen("input.txt", "r", stdin);
@@ -72,37 +29,91 @@ void BackJoon()
 
 	vector<Node> tree;
 	tree.resize(N);
+
+	vector<int> visited;
+	visited.resize(N);
+
+
+	int NumTown = 0;
 	for (int i = 0; i < N; i++)
 	{
-		char root, left, right;
-		cin >> root >> left >> right;
-		
-		Node node;
-		node.data = root;
-		
-		if (left == '.')
-			left = -1;
-		else
-			left = left - 'A';
+		cin >> visited[i];
 
-		if (right == '.')
-			right = -1;
-		else
-			right = right - 'A';
-
-
-		node.left = left;
-		node.right = right;
-		tree[root - 'A'] = node;
+		NumTown = max(NumTown, visited[i] + 1);
 	}
 
-	//preorder
+	//N번 노드의 부모 인덱스 없다면 -1
+	vector<int> result;
+	result.resize(NumTown, -1);
+
+	int root = visited[0];
+	//다음 방문노드
+	int NextVisited = 1;
+
 	
-	Preorder(tree, 0);
-	cout << endl;
-	Inorder(tree, 0);
-	cout << endl;
-	Postorder(tree, 0);
+	stack<int> rootNum;
+	rootNum.push(root);
+	while (NextVisited < visited.size())
+	{
+		//부모도시의 번호
+		//int rootNum = root;
+
+		/*if (rootNum < visited[NextVisited])
+		{
+			result[visited[NextVisited]] = rootNum;
+			root = visited[NextVisited++];
+		}
+		else
+		{
+			root = visited[NextVisited++];
+		}*/
+
+		//int rootNum = root;
+
+		if (rootNum.size() > 1)
+		{
+			int current = rootNum.top();
+			rootNum.pop();
+
+			//다시 돌아간다면
+			if (rootNum.top() == visited[NextVisited])
+			{
+				root = visited[NextVisited++];
+			}
+			else
+			{
+				rootNum.push(current);
+
+				result[visited[NextVisited]] = root;
+				root = visited[NextVisited++];
+
+				rootNum.push(root);
+			}
+		}
+		else
+		{
+			result[visited[NextVisited]] = root;
+			root = visited[NextVisited++];
+
+			rootNum.push(root);
+		}
+
+		/*if (rootNum < visited[NextVisited])
+		{
+			result[visited[NextVisited]] = rootNum;
+			root = visited[NextVisited++];
+		}
+		else
+		{
+			root = visited[NextVisited++];
+		}*/
+	}
+
+	cout << result.size() << endl;
+	for (int i = 0; i < result.size(); i++)
+	{
+		cout << result[i] << " ";
+	}
 	
 }
 
