@@ -73,9 +73,16 @@ void BackJoon()
 		{
 			pair<int, string> temp2 = pq.top();
 
-			collaps.insert(temp2.second);
-			//lengthpq.push(make_pair(temp2.second.length(), temp2.second));
-			pq.pop();
+			//겹친다
+			if (temp2.first == temp.first)
+			{
+				collaps.insert(temp2.second);
+				pq.pop();
+			}
+			else
+			{
+				break;
+			}
 		}
 
 		//겹치는 단어가 없다면.
