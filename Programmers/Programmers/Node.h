@@ -4,7 +4,6 @@ typedef struct tagNode {
 	struct tagNode* pNext = nullptr;
 	void* data;
 }Node;
-
 Node* CreateNode()
 {
 	Node* pNewNode = new Node;

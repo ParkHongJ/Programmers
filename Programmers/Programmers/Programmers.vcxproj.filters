@@ -39,6 +39,9 @@
     <ClCompile Include="Stack.cpp">
       <Filter>소스 파일\Stack</Filter>
     </ClCompile>
+    <ClCompile Include="MyList.cpp">
+      <Filter>소스 파일\List</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -49,6 +52,9 @@
     </ClInclude>
     <ClInclude Include="Node.h">
       <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MyList.h">
+      <Filter>소스 파일\List</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

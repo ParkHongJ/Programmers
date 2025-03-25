@@ -4,173 +4,132 @@
 #include <stdlib.h>
 #include <vector>
 #include <algorithm>
-#include <conio.h>
 #include <queue>
 #include <list>
 #include <stack>
 #include <set>
+#include <map>
+#include <unordered_map>
 #pragma warning(disable :4996)
 using namespace std;
 
-
-typedef struct Node
-{
-	vector<int> child;
-
-	int data;
-}NODE;
-
 void BackJoon()
 {
-    freopen("input.txt", "r", stdin);
-
-	int N;
-	cin >> N;
-
-	vector<Node> tree;
-	tree.resize(N);
-
-	vector<int> visited;
-	visited.resize(N);
+	freopen("input.txt", "r", stdin);
 
 
-	int NumTown = 0;
+	cin.tie(NULL);
+	std::ios_base::sync_with_stdio(false);
+
+	int M, N;
+	cin >> N >> M;
+
+	//나온 단어의 수
+
+	unordered_map<string, int> wordNum;
+
+	//map<int, string> wordLength;
+
 	for (int i = 0; i < N; i++)
 	{
-		cin >> visited[i];
-
-		NumTown = max(NumTown, visited[i] + 1);
-	}
-
-	//N번 노드의 부모 인덱스 없다면 -1
-	vector<int> result;
-	result.resize(NumTown, -1);
-
-	int root = visited[0];
-	//다음 방문노드
-	int NextVisited = 1;
-
-	
-	stack<int> rootNum;
-	rootNum.push(root);
-	while (NextVisited < visited.size())
-	{
-		//부모도시의 번호
-		//int rootNum = root;
-
-		/*if (rootNum < visited[NextVisited])
+		string str;
+		cin >> str;
+		//M 이상인 단어들만
+		if (str.length() >= M)
 		{
-			result[visited[NextVisited]] = rootNum;
-			root = visited[NextVisited++];
-		}
-		else
-		{
-			root = visited[NextVisited++];
-		}*/
+			unordered_map<string, int>::iterator iter = wordNum.find(str);
 
-		//int rootNum = root;
-
-		if (rootNum.size() > 1)
-		{
-			int current = rootNum.top();
-			rootNum.pop();
-
-			//다시 돌아간다면
-			if (rootNum.top() == visited[NextVisited])
+			//이미 단어목록에 들어갔다면
+			if (iter != wordNum.end())
 			{
-				root = visited[NextVisited++];
+				iter->second++;
 			}
 			else
 			{
-				rootNum.push(current);
-
-				result[visited[NextVisited]] = root;
-				root = visited[NextVisited++];
-
-				rootNum.push(root);
+				wordNum.emplace(str, 1);
 			}
 		}
-		else
-		{
-			result[visited[NextVisited]] = root;
-			root = visited[NextVisited++];
-
-			rootNum.push(root);
-		}
-
-		/*if (rootNum < visited[NextVisited])
-		{
-			result[visited[NextVisited]] = rootNum;
-			root = visited[NextVisited++];
-		}
-		else
-		{
-			root = visited[NextVisited++];
-		}*/
 	}
 
-	cout << result.size() << endl;
-	for (int i = 0; i < result.size(); i++)
+	priority_queue<pair<int, string>, vector<pair<int, string>>, less<pair<int, string>>> pq; //부른횟수
+	for (auto& iter : wordNum)
 	{
-		cout << result[i] << " ";
+		pq.push(make_pair(iter.second, iter.first));
 	}
-	
-}
 
-typedef struct tagMineralsFatigue {
-	int dia = 0;
-    int iron = 0;
-    int stone = 0;
-}Fatigue;
-
-
-vector<int> solution(vector<int> progresses, vector<int> speeds) {
-    vector<int> answer;
-
-	vector<int> temp;
-	int j = 1;
-    int i = 0;
-	while (i <= progresses.size())
+	while (!pq.empty())
 	{
-		if (progresses[i] + speeds[i] * j >= 100)
-		{
-			temp.push_back(j);
-            i++;
+		//가장 많이불린 단어.
+		pair<int, string> temp = pq.top();
 
-            if (i == progresses.size())
-            {
-                answer.push_back(temp.size());
-                break;
-            }
-            continue;
+		pq.pop();
+
+		//다음 단어와 겹치는지 확인해야함.
+
+		//겹치는 단어 목록
+		set<string> collaps;		
+		//priority_queue<pair<int, string>, vector<pair<int, string>>, less<pair<int, string>>> lengthpq;
+		while (!pq.empty())
+		{
+			pair<int, string> temp2 = pq.top();
+
+			collaps.insert(temp2.second);
+			//lengthpq.push(make_pair(temp2.second.length(), temp2.second));
+			pq.pop();
+		}
+
+		//겹치는 단어가 없다면.
+		if (collaps.empty())
+		{
+			cout << temp.second << "\n";
 		}
 		else
 		{
-			if (!temp.empty())
+			//todo
+			//길이순
+			
+			//사전순
+		}
+	}
+
+	/*int prevNum = 0;
+	while (!pq.empty())
+	{
+		pair<int, string> temp = pq.top();
+
+		pq.pop();
+
+		vector<pair<int, string>> tempVec;
+		while (!pq.empty())
+		{
+			pair<int, string> next = pq.top();
+
+			if (temp.first == next.first)
 			{
-				answer.push_back(temp.size());
-
-				temp.clear();
+				tempVec.push_back(next);
+				pq.pop();
+			}
+			else
+			{
+				break;
 			}
 		}
-        j++;
-	}
-	return answer;
-}
 
-void Programmers()
-{
-    vector<int> progresses = { 95, 95, 95, 95 };
-    vector<int> speeds = { 4,3,2,1 };
-    //vector<string> minerals = { "diamond", "diamond", "diamond", "iron", "iron", "diamond", "iron", "stone" };
-    solution(progresses, speeds);
-    //cout << solution(progresses, speeds) << endl;
+		if (tempVec.empty())
+		{
+			cout << temp.second << "\n";
+		}
+		else
+		{
+			
+		}
+
+	}*/
 }
 
 int main()
 {
-    //Programmers();
-    BackJoon();
-    getch();
-    return 0;
+	//Programmers();
+	BackJoon();
+	return 0;
 }
