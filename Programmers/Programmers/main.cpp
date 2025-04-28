@@ -9,6 +9,7 @@
 #include <stack>
 #include <set>
 #include <map>
+#include <string>
 #include <unordered_map>
 #pragma warning(disable :4996)
 using namespace std;
@@ -19,54 +20,86 @@ void BackJoon()
 	
 	cin.tie(NULL);
 	std::ios_base::sync_with_stdio(false);
-
-	int N;
-	cin >> N;
-
-	map<int, int> HasCards;
-	for (int i = 0; i < N; i++)
-	{
-		int Input;
-		cin >> Input;
-		map<int, int>::iterator iter = HasCards.find(Input);
-		if (iter != HasCards.end())
-		{
-			++(iter->second);
-		}
-		else
-		{
-			HasCards.emplace(Input, 1);
-		}
-		
-	}
 	
-	int M;
-	cin >> M;
-
-	vector<int> TargetCards;
-	TargetCards.reserve(M);
-
-	vector<int> Result;
-	Result.resize(M, 0);
-
-	for (int i = 0; i < M; i++)
+	string input;
+	cin >> input;
+	
+	int result = 0;
+	string str;
+	string strAdd;
+	bool bMinus = false;
+	for (int i = 0; i < input.length(); ++i)
 	{
-		int Input;
-		cin >> Input;
-
-		map<int, int>::iterator iter = HasCards.find(Input);
-
-		//소유하고있다면
-		if (iter != HasCards.end())
+		if (input[i] == '-' || input[i] == '+')
 		{
-			cout << 1 << " ";
+			//일단 킵
+			if (input[i] == '-' && bMinus)
+			{
+				result += stoi(strAdd) * -1;
+				strAdd = "0";
+				continue;
+			}
+			else if (input[i] == '-' && !bMinus)
+			{
+				bMinus = true;
+
+				result += stoi(str);
+				str = "0";
+				continue;
+			}
+			else
+			{
+				if (bMinus)
+				{
+					str = to_string(stoi(str) + stoi(strAdd));
+					strAdd = "0";
+					continue;
+				}
+				bMinus = false;
+			}
+
+			if (!bMinus)
+			{
+				result += stoi(str);
+				str = "0";
+			}
+			else
+			{
+				//이전에 -를 만났고, 이번에 + 라면
+				//다음 연산자까지 킵해야한다.
+				str = to_string(stoi(str) + stoi(strAdd));
+				strAdd = "0";
+			}
 		}
 		else
 		{
-			cout << 0 <<" ";
+			if (!bMinus)
+			{
+				str += input[i];
+			}
+			else
+			{
+				strAdd += input[i];
+			}
+			
 		}
 	}
+
+	if (bMinus)
+	{
+		str = to_string(stoi(str) + stoi(strAdd));
+		strAdd = "0";
+		result += stoi(str) * -1;
+	}
+	else
+	{
+		result += stoi(str);
+		str = "0";
+	}
+
+	cout << result << endl;
 }
+
 
 int main()
 {

@@ -1,7 +1,7 @@
 #include "MyList.h"
 #include <iostream>
 #include <assert.h>
-
+#include "Node.h"
 MyNode::MyNode(int val)
 {
     this->val = val;
@@ -10,6 +10,7 @@ MyNode::MyNode(int val)
 MyNode::MyNode(MyNode* prev, int val, MyNode* next)
 {
 }
+
 
 void MyList::MergeSort()
 {

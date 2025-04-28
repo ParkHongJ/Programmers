@@ -1,16 +1,24 @@
 #pragma once
-typedef struct tagNode {
+//typedef struct tagNode {
+//
+//	struct tagNode* pNext = nullptr;
+//	void* data;
+//}Node;
+//
+//
+//Node* CreateNode()
+//{
+//	Node* pNewNode = new Node;
+//
+//	return pNewNode;
+//}
+//void DeleteNode(Node* pNode)
+//{
+//
+//}
 
-	struct tagNode* pNext = nullptr;
-	void* data;
-}Node;
-Node* CreateNode()
-{
-	Node* pNewNode = new Node;
+class temp {
 
-	return pNewNode;
-}
-void DeleteNode(Node* pNode)
-{
-
-}
+private:
+	//~temp() {};
+};

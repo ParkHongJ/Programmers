@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-
+#include <memory>
 using namespace std;
 class MyNode
 {
@@ -17,6 +17,7 @@ public:
     만들어 놓은 연결리스트는. 추후 정렬 구현에도 사용 할 예정.
 
 */
+class temp;
 class MyList
 {
 private:
@@ -24,8 +25,9 @@ private:
     MyNode* tail = nullptr;
 
     int _size = 0;
-
+    unique_ptr< temp> tt;
 public:
+    ~MyList();
     void MergeSort();
     void QuickSort();
     void BubbleSort();
@@ -50,4 +52,5 @@ private:
     void Merge(std::vector<int>& array, int start, int end, std::vector<int>& temp);
     void QuickSort(std::vector<int>& array, int left, int right);
     int Partition(std::vector<int>& array, int left, int right);
+
 };
