@@ -21,83 +21,72 @@ void BackJoon()
 	cin.tie(NULL);
 	std::ios_base::sync_with_stdio(false);
 	
-	string input;
+	int input;
 	cin >> input;
-	
-	int result = 0;
-	string str;
-	string strAdd;
-	bool bMinus = false;
-	for (int i = 0; i < input.length(); ++i)
+
+	//다음 노드까지의 거리
+	vector<unsigned long long> toNextlength;
+
+	for (int i = 0; i < input - 1; ++i)
 	{
-		if (input[i] == '-' || input[i] == '+')
+		int length;
+		cin >> length;
+		toNextlength.push_back(length);
+	}
+
+	//각 주유소의 1리터당 기름
+	vector<unsigned long long> gasPrice;
+
+	for (int i = 0; i < input; i++)
+	{
+		int gas;
+		cin >> gas;
+		gasPrice.push_back(gas);
+	}
+
+	//현재 연료 L
+	unsigned long long currentFuel = 0;
+	unsigned long long currentNode = 0;
+
+	unsigned long long totalCost = 0;
+	//연료 값이 현재보다 작은걸 만날때까지 앞으로 가야한다.
+	while (currentNode + 1 < gasPrice.size())
+	{
+		//다음 노드 연료가 더 작으면
+		if (gasPrice[currentNode] > gasPrice[currentNode + 1])
 		{
-			//일단 킵
-			if (input[i] == '-' && bMinus)
-			{
-				result += stoi(strAdd) * -1;
-				strAdd = "0";
-				continue;
-			}
-			else if (input[i] == '-' && !bMinus)
-			{
-				bMinus = true;
-
-				result += stoi(str);
-				str = "0";
-				continue;
-			}
-			else
-			{
-				if (bMinus)
-				{
-					str = to_string(stoi(str) + stoi(strAdd));
-					strAdd = "0";
-					continue;
-				}
-				bMinus = false;
-			}
-
-			if (!bMinus)
-			{
-				result += stoi(str);
-				str = "0";
-			}
-			else
-			{
-				//이전에 -를 만났고, 이번에 + 라면
-				//다음 연산자까지 킵해야한다.
-				str = to_string(stoi(str) + stoi(strAdd));
-				strAdd = "0";
-			}
+			totalCost += gasPrice[currentNode] * toNextlength[currentNode];
 		}
 		else
 		{
-			if (!bMinus)
+			//다음 노드 연료가 더 크면
+
+			int length = 0;
+			int toNext = 0;
+			for (int i = currentNode; i < gasPrice.size(); ++i)
 			{
-				str += input[i];
+				//작은 노드를 만날때까지 길이 계산
+				if (gasPrice[currentNode] > gasPrice[i])
+				{
+					//다음 노드가 더 작으면 끝
+					break;
+				}
+				else
+				{
+					if (i < toNextlength.size())
+					{
+						length += toNextlength[i];
+					}
+					++toNext;
+				}
 			}
-			else
-			{
-				strAdd += input[i];
-			}
-			
+			totalCost += length* gasPrice[currentNode];
+			currentNode += toNext;
+			continue;
 		}
+		++currentNode;
 	}
-
-	if (bMinus)
-	{
-		str = to_string(stoi(str) + stoi(strAdd));
-		strAdd = "0";
-		result += stoi(str) * -1;
-	}
-	else
-	{
-		result += stoi(str);
-		str = "0";
-	}
-
-	cout << result << endl;
+	cout << totalCost;
 }
 
 
